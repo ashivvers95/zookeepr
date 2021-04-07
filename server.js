@@ -6,6 +6,8 @@ const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+app.use(express.static('public'));
+
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
@@ -46,7 +48,7 @@ function createNewAnimal(body, animalsArray) {
      const animal = body;
      animalsArray.push(animal);
      fs.writeFileSync(
-         path.join(_dirname, './data.animals.json'),
+         path.join(__dirname, './data.animals.json'),
          JSON.stringify({ animals: animalsArray }, null, 2)
      );
      return animal;
@@ -92,6 +94,23 @@ app.post('/api/animals', (req, res) => {
     res.json(animal);
   }
 });
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeeprs', (req, res)=> {
+    res.sendFile(path.join(__dirname, './public/zookeeprs.html'));
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
   });
