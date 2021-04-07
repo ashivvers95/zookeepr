@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { animals } = require('./data/animals');
 const express = require('express');
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -66,7 +67,6 @@ function validateAnimal(animal) {
 }
 app.get('/api/animals', (req, res) => {
     let results = animals;
-
     if (req.query) {
         results = filterByQuery(req.query, results);
     }
@@ -92,7 +92,6 @@ app.post('/api/animals', (req, res) => {
     res.json(animal);
   }
 });
-
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
   });
